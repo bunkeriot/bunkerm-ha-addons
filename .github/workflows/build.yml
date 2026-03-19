@@ -12,7 +12,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: bunkerm/bunkerm-ha-addons/bunkerm
+  IMAGE_NAME: bunkeriot/bunkerm-ha-addons/bunkerm
 
 jobs:
   build:
