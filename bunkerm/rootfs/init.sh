@@ -37,6 +37,14 @@ fi
 export MQTT_PORT=1883
 export MOSQUITTO_PORT=1883
 
+# ── Fast-fail cloud activation URL ────────────────────────────────────────────
+# agent-api calls this URL on startup; if it hangs (8 s timeout) uvicorn won't
+# accept connections, causing the ActivationBanner to flash on first page load.
+# Pointing it at a closed local port makes it fail in <1 ms, so the banner is
+# never shown.  Users who want BunkerAI Cloud features can still paste their
+# activation key in Settings → Agents.
+export BUNKERAI_ACTIVATION_URL="http://127.0.0.1:19876"
+
 echo "[BunkerM] Starting services..."
 echo "[BunkerM]  Web UI  → http://<ha-ip>:2000  (login: $ADMIN_EMAIL)"
 echo "[BunkerM]  MQTT    → <ha-ip>:1883  (user: $MQTT_USERNAME)"
