@@ -14,7 +14,7 @@ Returning {"activated":true,"instance_id":"BKMR-ha-local"} suppresses it.
 
 import sys
 
-CONF   = "/etc/nginx/http.d/default.conf"
+CONF   = "/etc/nginx/conf.d/default.conf"
 MARKER = "BKMR-ha-local"
 INSERT = (
     '    location = /api/settings/activation-status {\n'
