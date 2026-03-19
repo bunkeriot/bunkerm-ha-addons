@@ -33,6 +33,10 @@ if [ -f "$MOSQUITTO_CONF" ]; then
     sed -i 's/^listener 1900$/listener 1883/' "$MOSQUITTO_CONF"
 fi
 
+# ── Tell all internal services to use port 1883 ───────────────────────────────
+export MQTT_PORT=1883
+export MOSQUITTO_PORT=1883
+
 echo "[BunkerM] Starting services..."
 echo "[BunkerM]  Web UI  → http://<ha-ip>:2000  (login: $ADMIN_EMAIL)"
 echo "[BunkerM]  MQTT    → <ha-ip>:1883  (user: $MQTT_USERNAME)"
