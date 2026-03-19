@@ -57,6 +57,13 @@ if [ -f "$SUPERVISORD_CONF" ]; then
     fi
 fi
 
+# ── Suppress ActivationBanner at nginx level ──────────────────────────────────
+# Intercept /api/settings/activation-status in nginx and return a static
+# {"activated":true} response, bypassing agent-api entirely.
+# This is the most robust fix: works regardless of agent-api timing,
+# network access, or port conflicts.
+python3 /patch_nginx.py || true
+
 echo "[BunkerM] Starting services..."
 echo "[BunkerM]  Web UI  → http://<ha-ip>:2000  (login: $ADMIN_EMAIL)"
 echo "[BunkerM]  MQTT    → <ha-ip>:1883  (user: $MQTT_USERNAME)"
