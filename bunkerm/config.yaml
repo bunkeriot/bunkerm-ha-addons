@@ -1,18 +1,13 @@
 name: BunkerM
-version: "2.0.1"
+version: "2.0.2"
 slug: bunkerm
 description: MQTT broker management platform — Eclipse Mosquitto with a full web dashboard, client management, real-time monitoring, and AI-powered assistant.
 url: https://github.com/bunkeriot/bunkerm-ha-addons
 arch:
   - amd64
   - aarch64
-ports:
-  2000/tcp: 2000
-  1883/tcp: 1883
-ports_description:
-  2000/tcp: BunkerM Web UI
-  1883/tcp: MQTT Broker
 init: false
+host_network: true
 options:
   mqtt_username: bunker
   mqtt_password: bunker
