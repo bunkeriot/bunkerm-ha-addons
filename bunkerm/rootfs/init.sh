@@ -38,12 +38,24 @@ export MQTT_PORT=1883
 export MOSQUITTO_PORT=1883
 
 # ── Fast-fail cloud activation URL ────────────────────────────────────────────
-# agent-api calls this URL on startup; if it hangs (8 s timeout) uvicorn won't
-# accept connections, causing the ActivationBanner to flash on first page load.
-# Pointing it at a closed local port makes it fail in <1 ms, so the banner is
-# never shown.  Users who want BunkerAI Cloud features can still paste their
-# activation key in Settings → Agents.
+# agent-api calls BUNKERAI_ACTIVATION_URL on startup (default: api.bunkerai.dev).
+# If unreachable it hangs for 8 s, blocking uvicorn from accepting connections.
+# The browser's first page load races that window → activation-status catches
+# "connection refused" and returns {activated:false, instance_id:null} → banner.
+#
+# Fix: point the URL at a closed local port so httpx fails in <1 ms.
+# We set it two ways to be certain agent-api sees it:
+#   1. export  — supervisord inherits and passes to children
+#   2. sed     — inject it directly into the agent-api environment= line
 export BUNKERAI_ACTIVATION_URL="http://127.0.0.1:19876"
+
+SUPERVISORD_CONF="/etc/supervisor/conf.d/supervisord.conf"
+if [ -f "$SUPERVISORD_CONF" ]; then
+    # Only patch if not already patched
+    if ! grep -q "BUNKERAI_ACTIVATION_URL" "$SUPERVISORD_CONF"; then
+        sed -i 's|PYTHONPATH="/app",API_KEY|PYTHONPATH="/app",BUNKERAI_ACTIVATION_URL="http://127.0.0.1:19876",API_KEY|' "$SUPERVISORD_CONF"
+    fi
+fi
 
 echo "[BunkerM] Starting services..."
 echo "[BunkerM]  Web UI  → http://<ha-ip>:2000  (login: $ADMIN_EMAIL)"
