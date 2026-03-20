@@ -1,5 +1,5 @@
 name: BunkerM
-version: "2.0.8"
+version: "2.0.9"
 slug: bunkerm
 description: MQTT broker management platform — Eclipse Mosquitto with a full web dashboard, client management, real-time monitoring, and AI-powered assistant.
 url: https://github.com/bunkeriot/bunkerm-ha-addons
@@ -13,8 +13,10 @@ options:
   mqtt_password: bunker
   admin_email: admin@bunker.local
   admin_password: admin123
+  bunkerai_api_key: ""
 schema:
   mqtt_username: str
   mqtt_password: str
   admin_email: str
   admin_password: str
+  bunkerai_api_key: str
